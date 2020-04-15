@@ -8,6 +8,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn import metrics
 from sklearn.model_selection import validation_curve, GridSearchCV
 from sklearn.svm import SVC 
+from sklearn.preprocessing import MinMaxScaler
 
 credit_fraud = pd.read_csv("default_credit_card_clients.csv")
 # credit_fraud = credit_fraud.sample(10000)
@@ -16,12 +17,45 @@ train_X, train_Y = train.iloc[:, :-1], train.iloc[:, [-1]]
 test_X, test_Y = test.iloc[:, :-1], test.iloc[:, [-1]]
 print(train_X.shape)
 print(train_Y.shape)
+scaler = MinMaxScaler()  # Default behavior is to scale to [0,1]
+# train_X = scaler.fit_transform(train_X)
 # clf = RandomForestClassifier(n_estimators=300)
 # clf = clf.fit(train_X, train_Y)
 # y_pred = clf.predict(test_X)
 # print(y_pred.shape)
 # print(test_Y.shape)
 # print("Accuracy:",metrics.accuracy_score(test_Y, y_pred))
+
+# Random Forest - Grid Search for Best Hyperparameters 
+
+
+n_estimators = [50, 100, 150, 200, 250]
+max_depth = [5, 10, 15, 25, 30]
+min_samples_split = [2, 5, 10, 15, 100]
+min_samples_leaf = [1, 2, 5, 10] 
+
+hyperF = dict(n_estimators = n_estimators, max_depth = max_depth,  
+              min_samples_split = min_samples_split, 
+             min_samples_leaf = min_samples_leaf)
+
+gridF = GridSearchCV(RandomForestClassifier(), hyperF, cv = 3, verbose = 2)
+bestF = gridF.fit(train_X, train_Y.values.ravel())
+print(bestF.best_estimator_)
+print(pd.concat([pd.DataFrame(bestF.cv_results_["params"]),pd.DataFrame(bestF.cv_results_["mean_test_score"], columns=["Accuracy"])],axis=1))
+
+
+# SVM - Grid Search for Best Hyperparameters 
+
+# param_grid = {'C': [0.1,1, 10, 100], 'gamma': [1,0.1,0.01,0.001],'kernel': ['rbf', 'poly', 'sigmoid']}
+# grid = GridSearchCV(SVC(),param_grid,refit=True,verbose=2)
+# grid.fit(train_X,train_Y.values.ravel())
+# print(grid.best_estimator_)
+# print(pd.concat([pd.DataFrame(grid.cv_results_["params"]),pd.DataFrame(grid.cv_results_["mean_test_score"], columns=["Accuracy"])],axis=1))
+
+
+
+# Random Forest - Validation Curve Approach 
+# Grid Search is Better Approach for Tuning
 
 # param_range = [50,100,150,200,250,300,350,400]
 # train_scoreNum, test_scoreNum = validation_curve(
@@ -83,11 +117,3 @@ print(train_Y.shape)
 # plt.plot(min_sample_param_range, test_scores_mean, label='Testing Data',color='blue',markerfacecolor='blue')
 # plt.legend(loc="best")
 # plt.show()
-
-# SVM - Grid Search for Best Hyperparameters 
-
-param_grid = {'C': [0.1,1, 10, 100], 'gamma': [1,0.1,0.01,0.001],'kernel': ['rbf', 'poly', 'sigmoid']}
-grid = GridSearchCV(SVC(),param_grid,refit=True,verbose=2)
-grid.fit(train_X,train_Y.values.ravel())
-print(grid.best_estimator_)
-print(grid.cv_results_)
