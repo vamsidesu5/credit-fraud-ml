@@ -178,22 +178,21 @@ plt.plot(gamma, test_scores_mean, label='Testing Data',color='blue',markerfaceco
 plt.legend(loc="best")
 plt.show()
 
-# def plotValidationCurve(parameter_name, parameter_list):
-#     train_scoreNum, test_scoreNum = validation_curve(
-#                                 SVC(),
-#                                 X = X, y = Y.values.ravel(), 
-#                                 param_name = 'gamma', 
-#                                 param_range = gamma , cv = 3)
-#     train_scores_mean = np.mean(train_scoreNum, axis=1)
-#     test_scores_mean = np.mean(test_scoreNum, axis=1)
+# train_scoreNum, test_scoreNum = validation_curve(
+#                             SVC(),
+#                             X = X, y = Y.values.ravel(), 
+#                             param_name = 'gamma', 
+#                             param_range = gamma , cv = 3)
+# train_scores_mean = np.mean(train_scoreNum, axis=1)
+# test_scores_mean = np.mean(test_scoreNum, axis=1)
 
-#     print(train_scores_mean)
-#     print(test_scores_mean)
+# print(train_scores_mean)
+# print(test_scores_mean)
 
-#     plt.title("SVM")
-#     plt.xlabel("Gamma")
-#     plt.ylabel("Accuracy Score")
-#     plt.plot(gamma, train_scores_mean, label='Training Score', color='red',markerfacecolor='red')
-#     plt.plot(gamma, test_scores_mean, label='Testing Data',color='blue',markerfacecolor='blue')
-#     plt.legend(loc="best")
-#     plt.show()
+# plt.title("SVM")
+# plt.xlabel("Gamma")
+# plt.ylabel("Accuracy Score")
+# plt.plot(gamma, train_scores_mean, label='Training Score', color='red',markerfacecolor='red')
+# plt.plot(gamma, test_scores_mean, label='Testing Data',color='blue',markerfacecolor='blue')
+# plt.legend(loc="best")
+# plt.show()
